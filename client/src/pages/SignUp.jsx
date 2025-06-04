@@ -11,14 +11,33 @@ const handleChange = (e) =>{
   })
 }
 
-console.log(formData);
+const handleSubmit = async(e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch('/api/auth/signup',{
+      method:'POST',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify(formData),
+    })
+    const data = await res.json();
+    console.log(data);
+  
+    
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
 
 
 
   return (
     <div className='p-3 max-w-xl mx-auto'>
       <h1 className='my-7 text-center text-3xl  font-semibold '>Sign Up Page</h1>
-      <form className='flex flex-col gap-4'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input type='text' placeholder='Username' id="username" className=' p-3 border rounded-lg' onChange={handleChange}/>
         <input type='email' placeholder='Email' id="email" className=' p-3 border rounded-lg' onChange={handleChange}/>
         <input type='password' placeholder='Password' id="password" className=' p-3 border rounded-lg' onChange={handleChange}/>
