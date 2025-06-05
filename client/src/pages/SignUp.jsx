@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
 const [formData,setFormData] = useState({});
+const [error,setError] = useState(null);
+const [loading,setLoading] = useState(false);
+const navigate =  useNavigate()
 
 const handleChange = (e) =>{
   setFormData({
@@ -13,6 +16,7 @@ const handleChange = (e) =>{
 
 const handleSubmit = async(e) => {
   e.preventDefault();
+  setLoading(true)
   try {
     const res = await fetch('/api/auth/signup',{
       method:'POST',
@@ -23,13 +27,26 @@ const handleSubmit = async(e) => {
     })
     const data = await res.json();
     console.log(data);
+    if(data.success === false){
+       setLoading(false)
+       setError(data.message)
+       return;
+    }
+
+    setError(null)
+    setLoading(false)
+    navigate('/signin')
   
     
     
   } catch (error) {
-    console.log(error);
+    setError(error.message)
+    setLoading(false)
+    console.log(error.message);
+
     
   }
+
 }
 
 
@@ -41,7 +58,9 @@ const handleSubmit = async(e) => {
         <input type='text' placeholder='Username' id="username" className=' p-3 border rounded-lg' onChange={handleChange}/>
         <input type='email' placeholder='Email' id="email" className=' p-3 border rounded-lg' onChange={handleChange}/>
         <input type='password' placeholder='Password' id="password" className=' p-3 border rounded-lg' onChange={handleChange}/>
-        <button className='p-3 bg-blue-700 text-white  border rounded-lg uppercase hover:opacity-90 disabled:opacity-85'>Sign up</button>
+        <button disabled={loading} className='p-3 bg-blue-700 text-white  border rounded-lg uppercase hover:opacity-90 disabled:opacity-85'>
+        {loading ? "Loading..." : "Sign Up"}
+        </button>
       </form>
       <div className='flex gap-2 my-5'>
         <p>Have an account?</p>
@@ -51,6 +70,7 @@ const handleSubmit = async(e) => {
         </span>
         </Link>
       </div>
+      {error && <p className='text-red-700'>{error}</p> }
     </div>
   )
 }

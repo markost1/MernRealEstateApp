@@ -15,6 +15,6 @@ export const signUp = async (req,res,next) =>{
     } catch (error) {
         //res.status(500).json(error.message)
         //next(error) prosledjujem error
-        return next(handleError(500,'i made this error manually'))
+        return next(handleError(500, 'Korisnik sa unesenim podacima vec postoji u bazi')) //ovdje mogu da error.message 
     }
 }
