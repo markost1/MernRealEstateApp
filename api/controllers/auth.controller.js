@@ -18,3 +18,7 @@ export const signUp = async (req,res,next) =>{
         return next(handleError(500, 'Korisnik sa unesenim podacima vec postoji u bazi')) //ovdje mogu da error.message 
     }
 }
+
+export const signIn = (req,res,next) => {
+    res.status(200).json({message :'Sign in ruta je formirana'})
+}
