@@ -39,7 +39,7 @@ export const signIn = async (req,res,next) => {
             httpOnly:true,
             sameSite: 'strict',
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)  
-            }).status(200).json({rest})
+            }).status(200).json(rest)
 
     } catch (error) {
         console.log(error);
