@@ -42,3 +42,20 @@ export const updateUser = async(req,res,next)=>{
     }
 
 }
+
+
+export const deleteUser = async(req,res,next) => {
+    if(req.user.id !== req.params.id){
+        return next(handleError(402,'You are not permited to delete account'))
+    }
+    try {
+        await User.findByIdAndDelete(req.params.id)
+        
+        res.clearCookie('access_token')
+        res.status(200).json('user Deleted')
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}

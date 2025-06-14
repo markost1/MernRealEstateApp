@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import  avatarImg  from '../assets/avatarImg.jpg'
 import {useDispatch, useSelector} from 'react-redux'
-import { updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
 
 
 export default function Profile() {
@@ -49,6 +49,28 @@ const dispatch = useDispatch();
       
     }
   }
+
+  const handleDeleteUser = async() =>{
+  
+    try {
+      dispatch(deleteUserStart())
+      const res = await fetch(`/api/user/delete/${currentUser._id}`,{
+        method:'DELETE'
+      })
+
+      const data = await res.json()
+      if(data.success === false){
+        dispatch(deleteUserFailure(data.message))
+      }
+      console.log(data);
+
+      dispatch(deleteUserSuccess(data))
+      
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message))
+      
+    }
+  }
   
 
   return (
@@ -66,7 +88,7 @@ const dispatch = useDispatch();
       </form>
       <div className='flex justify-between my-4'>
         <span className='text-red-700 cursor-pointer'>Sign out</span>
-        <span className='text-red-800 cursor-pointer'>Delete Profile</span>
+        <span onClick={handleDeleteUser} className='text-red-800 cursor-pointer'>Delete Profile</span>
       </div>
       {error && <p className='text-red-800 mt-5'>{error}</p>}
       {updateSuccess && <p className='text-green-600 mt-5'>User is successfully updated</p>}
