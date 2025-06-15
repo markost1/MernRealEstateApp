@@ -2,7 +2,7 @@ import { useState } from 'react'
 import  avatarImg  from '../assets/avatarImg.jpg'
 import {useDispatch, useSelector} from 'react-redux'
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutFailure, signOutStart, signOutSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Profile() {
 const {currentUser, loading, error} = useSelector(state => state.user)
@@ -108,7 +108,14 @@ const navigate = useNavigate();
         <button  className='border rounded-lg p-3 bg-blue-700 text-teal-50 uppercase hover:opacity-90 disabled:opacity-80'>
         {loading ? 'Loading' : 'Update'}
         </button>
+        
+        <Link className='border rounded-lg p-3 text-center bg-blue-950 text-teal-50 uppercase hover:opacity-90 disabled:opacity-80' to='/create-listing'>
+        Create Listing
+        </Link>
+        
+        
       </form>
+      
       <div className='flex justify-between my-4'>
         <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign out</span>
         <span onClick={handleDeleteUser} className='text-red-800 cursor-pointer'>Delete Profile</span>
