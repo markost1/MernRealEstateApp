@@ -48,3 +48,13 @@ export const signIn = async (req,res,next) => {
     }
     
 }
+
+export const signOut = (req,res,next) => {
+    try {
+        res.clearCookie('access_token')
+        res.status(200).json('user is succesffuly signed out')
+    } catch (error) {
+        console.log(error);
+        
+    }
+}

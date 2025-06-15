@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import  avatarImg  from '../assets/avatarImg.jpg'
 import {useDispatch, useSelector} from 'react-redux'
-import { deleteUserFailure, deleteUserStart, deleteUserSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
-
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutFailure, signOutStart, signOutSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
 const {currentUser, loading, error} = useSelector(state => state.user)
 const [formData,setFormData] = useState({})
 const [updateSuccess, setUpdateSuccess] = useState(false)
 const dispatch = useDispatch();
+const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -16,7 +17,7 @@ const dispatch = useDispatch();
     })
   }
 
-  console.log(formData);
+  
   const handleSubmit = async(e) => {
     e.preventDefault();
     
@@ -65,9 +66,31 @@ const dispatch = useDispatch();
       console.log(data);
 
       dispatch(deleteUserSuccess(data))
+      navigate('/signup')
       
     } catch (error) {
       dispatch(deleteUserFailure(error.message))
+      
+    }
+  }
+
+  const handleSignOut = async() => {
+    try {
+      dispatch(signOutStart())
+      const res = await fetch('/api/auth/signout');
+      const data =await res.json()
+      if(data.success === false){
+        dispatch(signOutFailure(data.message))
+        return;
+      }
+
+      dispatch(signOutSuccess(data))
+      navigate('/signin')
+      
+      
+
+    } catch (error) {
+        dispatch(signOutFailure(error.message))
       
     }
   }
@@ -87,7 +110,7 @@ const dispatch = useDispatch();
         </button>
       </form>
       <div className='flex justify-between my-4'>
-        <span className='text-red-700 cursor-pointer'>Sign out</span>
+        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign out</span>
         <span onClick={handleDeleteUser} className='text-red-800 cursor-pointer'>Delete Profile</span>
       </div>
       {error && <p className='text-red-800 mt-5'>{error}</p>}
