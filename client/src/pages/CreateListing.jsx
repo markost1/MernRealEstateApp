@@ -1,6 +1,50 @@
-import React from 'react'
+import { useState } from "react"
+
 
 export default function CreateListing() {
+
+const [formData, setFormData] = useState({
+  name:'',
+  description: '',
+  address: '',
+  regularPrice: 50,
+  bathrooms:1,
+  bedrooms:1,
+  furnished:true,
+  parking: true,
+  type:'rent',
+
+});
+
+const handleChange = (e) =>{
+  if(e.target.id === 'sale' || e.target.id === 'rent'){
+   setFormData({
+      ...formData,
+      type : e.target.id
+    })
+  }
+
+  if(e.target.id === 'parking' || e.target.id === 'furnished'){
+    setFormData({
+      ...formData,
+      [e.target.id]:e.target.checked
+    })
+  }
+
+  if(e.target.type === 'number' || e.target.type === 'text' || e.target.type === 'textarea' ){
+    setFormData({
+      ...formData,
+      [e.target.id] : e.target.value
+    })
+  }
+
+
+
+
+}
+
+console.log(formData);
+
   return (
     <main className='p-3 max-w-3xl mx-auto'>
    
@@ -9,40 +53,40 @@ export default function CreateListing() {
     {/* kontainer za unos podataka */}
       <div className='flex flex-col gap-4 flex-1'>
       
-        <input type='text' placeholder='Name' id='name ' className='border p-3 rounded-lg' maxLength='62' minLength='10' required/>
-        <textarea type='text' placeholder='Description' id='description' className='border p-3 rounded-lg' required />
-        <input type='text' placeholder='Address' id='address' className='border p-3 rounded-lg' required />
+        <input type='text' placeholder='Name' id='name' className='border p-3 rounded-lg' maxLength='62' minLength='10' required onChange={handleChange} value={formData.name}/>
+        <textarea type='textarea' placeholder='Description' id='description' className='border p-3 rounded-lg' required onChange={handleChange} value={formData.description} />
+        <input type='text' placeholder='Address' id='address' className='border p-3 rounded-lg' required onChange={handleChange} value={formData.address}/>
      {/* kontainer sa check box-om */}
      <div className='flex justify-between flex-wrap'>
         <div className='flex gap-2'>
-          <input type='checkbox' id='sale' className='w-5'/>
+          <input type='checkbox' id='sale' className='w-5' onChange={handleChange}  checked={formData.type === 'sale'}/>
           <span>Sell</span>
         </div>
         <div className='flex gap-2'>
-          <input type='checkbox' id='rent' className='w-5'/>
+          <input type='checkbox' id='rent' className='w-5' onChange={handleChange}  checked={formData.type === 'rent'}/>
           <span>Rent</span>
         </div>
         <div className='flex gap-2'>
-          <input type='checkbox' id='parking' className='w-5'/>
+          <input type='checkbox' id='parking' className='w-5' onChange={handleChange}  checked={formData.parking} />
           <span>Parking Spot</span>
         </div>
         <div className='flex gap-2'>
-          <input type='checkbox' id='furnished' className='w-5'/>
+          <input type='checkbox' id='furnished' className='w-5' onChange={handleChange}  checked={formData.furnished}/>
           <span>Furnished</span>
         </div>
      </div>
      {/* kontainer za unos soba i kupatila i cijene  */}
      <div className='flex flex-wrap gap-3 sm:flex-row justify-between'>
         <div className='flex items-center gap-3'>
-          <input type='number' min='1' max='10' required id='beds' className='p-3 border border-gray-400 rounded-lg'/>
+          <input type='number' min='1' max='10' required id='bedrooms' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.bedrooms} />
           <span>Beds</span>
         </div>
         <div className='flex items-center gap-3'>
-          <input type='number' min='1' max='10' required id='bathrooms' className='p-3 border border-gray-400 rounded-lg'/>
+          <input type='number' min='1' max='10' required id='bathrooms' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.bathrooms} />
           <span>Bathrooms</span>
         </div>
         <div className='flex items-center gap-3'>
-          <input type='number' min='1' max='100000000' required  id='regularPrice' className='p-3 border border-gray-400 rounded-lg'/>
+          <input type='number' min='1' max='100000000' required  id='regularPrice' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.regularPrice} />
           <div className='flex flex-col items-center'>
           <span>Regular Price</span> 
           <span> $ </span> 
