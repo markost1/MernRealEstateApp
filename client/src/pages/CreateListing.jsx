@@ -1,7 +1,10 @@
 import { useState } from "react"
+import { useSelector } from "react-redux";
 
 
 export default function CreateListing() {
+
+const {currentUser} = useSelector(state => state.user)
 
 const [formData, setFormData] = useState({
   name:'',
@@ -15,6 +18,9 @@ const [formData, setFormData] = useState({
   type:'rent',
 
 });
+const [error, setError] = useState(false)
+const [loading,setLoading]  = useState(false)
+const [success, setSuccess] = useState(false)
 
 const handleChange = (e) =>{
   if(e.target.id === 'sale' || e.target.id === 'rent'){
@@ -38,9 +44,42 @@ const handleChange = (e) =>{
     })
   }
 
+}
 
+const handleSubmit = async(e) => {
+  e.preventDefault();
+  setLoading(true)
+  try {
+    const res = await fetch('/api/listings/create',{
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        ...formData,
+        userRef: currentUser._id,
 
+      })
+    })
 
+    const data = await res.json()
+
+    if(data.success === false){
+      setLoading(false)
+      setError(true)
+      return;
+    }
+
+    setLoading(false);
+    setError(false)
+    setSuccess(true)
+    console.log(data);
+    
+
+  } catch (error) {
+    console.log(error);
+    
+  }
 }
 
 console.log(formData);
@@ -49,7 +88,7 @@ console.log(formData);
     <main className='p-3 max-w-3xl mx-auto'>
    
     <h1 className='text-3xl font-semibold text-center my-7'>Create Listing</h1>
-    <form className='flex flex-col'>
+    <form onSubmit={handleSubmit} className='flex flex-col'>
     {/* kontainer za unos podataka */}
       <div className='flex flex-col gap-4 flex-1'>
       
@@ -99,10 +138,14 @@ console.log(formData);
       </div>
      
      <button className='mt-7 p-3 bg-blue-600 rounded-lg text-white uppercase hover:opacity-90 disabled:opacity-80'>
-      Create Listing
+     {loading ? 'Loading' : 'Create Listing'} 
      </button>
 
     </form>
+
+
+    {error ? <p className="mt-5 text-red-700">{error.message}</p> : ''}
+    {success ? <p className="mt-5 text-green-700">Listing is successfully saved in DB </p> : ''}
     
     
     
