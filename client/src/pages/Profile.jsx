@@ -8,6 +8,7 @@ export default function Profile() {
 const {currentUser, loading, error} = useSelector(state => state.user)
 const [formData,setFormData] = useState({})
 const [updateSuccess, setUpdateSuccess] = useState(false)
+const [userListings, setUserListings] = useState([])
 const dispatch = useDispatch();
 const navigate = useNavigate();
 
@@ -94,6 +95,25 @@ const navigate = useNavigate();
       
     }
   }
+
+  const showUserListings = async() =>{
+    try {
+      const res = await fetch(`api/user/listings/${currentUser._id}`)
+      const data = await res.json()
+
+      if(data.success === false){
+        console.log(data.message);
+        return;
+      }
+
+      setUserListings(data)
+
+
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+  }
   
 
   return (
@@ -122,6 +142,13 @@ const navigate = useNavigate();
       </div>
       {error && <p className='text-red-800 mt-5'>{error}</p>}
       {updateSuccess && <p className='text-green-600 mt-5'>User is successfully updated</p>}
+
+      <button onClick={showUserListings} className='text-green-700 w-full'>Show listings</button>
+      {userListings && userListings.length > 0 && userListings.map((listing)=>{
+        return <div key={listing._id}>
+          {listing.description}
+        </div>
+      })}
     </div>
     
   )
