@@ -5,7 +5,7 @@ export const createListing = async (req,res,next) =>{
    const newListing = await Listing.create(req.body)
     try {
         await newListing.save();
-        res.status(200).json({message: 'Listing is successfully saved in DB '})
+        res.status(200).json(newListing)
 
         
     } catch (error) {
@@ -14,3 +14,4 @@ export const createListing = async (req,res,next) =>{
     }
     
 }
+
