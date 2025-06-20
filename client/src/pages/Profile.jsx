@@ -3,6 +3,7 @@ import  avatarImg  from '../assets/avatarImg.jpg'
 import {useDispatch, useSelector} from 'react-redux'
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutFailure, signOutStart, signOutSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
 import { Link, useNavigate } from 'react-router-dom'
+import home from '../assets/home.jpg'
 
 export default function Profile() {
 const {currentUser, loading, error} = useSelector(state => state.user)
@@ -144,11 +145,24 @@ const navigate = useNavigate();
       {updateSuccess && <p className='text-green-600 mt-5'>User is successfully updated</p>}
 
       <button onClick={showUserListings} className='text-green-700 w-full'>Show listings</button>
+      <div className='flex flex-col gap-3 mt-3'>
       {userListings && userListings.length > 0 && userListings.map((listing)=>{
-        return <div key={listing._id}>
-          {listing.description}
+        return <div className='border flex p-3 justify-between items-center gap-3' key={listing._id}>
+        <Link to={`/listing/${listing._id}`} >
+          <img className='w-12 h-12' src={home} alt='image'/>
+          </Link>
+          <Link to={`/listing/${listing._id}`}>
+          <p className='flex-1 hover:underline truncate'>{listing.name}</p>
+          </Link>
+          <div className='flex flex-col gap-2'>
+            <button className='text-green-700 uppercase'>Edit</button>
+            <button className='text-red-700 uppercase'>Delete</button>
+          </div>
         </div>
+        
       })}
+      
+      </div>
     </div>
     
   )
