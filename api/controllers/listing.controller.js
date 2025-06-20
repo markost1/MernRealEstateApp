@@ -1,4 +1,5 @@
 import Listing from "../models/listing.model.js";
+import { handleError } from "../utils/error.js";
 
 export const createListing = async (req,res,next) =>{
    
@@ -15,3 +16,28 @@ export const createListing = async (req,res,next) =>{
     
 }
 
+export const deleteListing =async (req,res,next) => {
+        
+    // listing sa odredjenim id-jem smijestam u prom jenjivu listings radi provjere
+
+    const listing = await Listing.findById(req.params.id)
+
+    //provjera da li listing postoji
+
+    if(!listing){
+        next(handleError(401,'Listing not found'))
+    }
+
+    //provjera da li je korisnicki id jednak sa id referencom listinga tj da li je korisnik kreirao listing
+
+    if(req.user.id !== listing.userRef){
+        next(handleError(401,'You can delete only your listing'))
+    }
+    try {
+        //brisanje listinga iz DB 
+        await Listing.findByIdAndDelete(req.params.id)
+        res.status(200).json('Listing is successfully deleted')
+    } catch (error) {
+        next(error)
+    }
+}
