@@ -25,18 +25,18 @@ export const deleteListing =async (req,res,next) => {
     //provjera da li listing postoji
 
     if(!listing){
-        next(handleError(401,'Listing not found'))
+       return next(handleError(401,'Listing not found'))
     }
 
     //provjera da li je korisnicki id jednak sa id referencom listinga tj da li je korisnik kreirao listing
 
     if(req.user.id !== listing.userRef){
-        next(handleError(401,'You can delete only your listing'))
+        return next(handleError(401,'You can delete only your listing'))
     }
     try {
         //brisanje listinga iz DB 
         await Listing.findByIdAndDelete(req.params.id)
-        res.status(200).json('Listing is successfully deleted')
+        return res.status(200).json('Listing is successfully deleted')
     } catch (error) {
         next(error)
     }
