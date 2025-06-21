@@ -176,7 +176,9 @@ const navigate = useNavigate();
           </Link>
           <div className='flex flex-col gap-2'>
           {/* stavio bih link koji vodi na stranicu koja kad se ocita ima postake iz liatinga sa ogovarajucim id jem edit-listing/listing.id */}
+           <Link to={`/edit-listing/${listing._id}`}>
             <button className='text-green-700 uppercase'>Edit</button>
+           </Link>
             <button onClick={()=>handleDeleteListing(listing._id)} className='text-red-700 uppercase'>Delete</button>
           </div>
         </div>
