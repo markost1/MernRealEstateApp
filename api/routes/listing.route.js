@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/create',verifyToken, createListing)
 router.delete('/delete/:id',verifyToken,deleteListing)
-router.post('/edit-listing/:id',verifyToken, editListing)
+router.post('/edit/:id',verifyToken, editListing)
 router.get('/get/:listingId',getListing)
 
 

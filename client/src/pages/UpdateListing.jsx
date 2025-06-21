@@ -54,7 +54,7 @@ const handleSubmit = async(e) => {
   e.preventDefault();
   setLoading(true)
   try {
-    const res = await fetch(`/api/listing/edit-listing/${params.listingId}`,{
+    const res = await fetch(`/api/listing/edit/${params.listingId}`,{
       method:'POST',
       headers:{
         "Content-Type":"application/json"
@@ -88,6 +88,7 @@ const handleSubmit = async(e) => {
 }
 
  useEffect(()=>{
+
   const fetchListing = async()=>{
     const listingId = params.listingId
     const res = await fetch(`/api/listing/get/${listingId}`)
@@ -101,7 +102,7 @@ const handleSubmit = async(e) => {
    
   }
   fetchListing()
- },[])
+ },[params.listingId])
 
   return (
     <main className='p-3 max-w-3xl mx-auto'>
