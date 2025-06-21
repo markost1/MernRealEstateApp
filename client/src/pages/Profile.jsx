@@ -167,14 +167,14 @@ const navigate = useNavigate();
       <button onClick={showUserListings} className='text-green-700 w-full'>Show listings</button>
       <div className='flex flex-col gap-3 mt-3'>
       {userListings && userListings.length > 0 && userListings.map((listing)=>{
-        return <div className='border flex p-3 justify-between items-center gap-3' key={listing._id}>
+        return <div className='border flex p-3 justify-between items-center gap-3  flex-1 min-w-0' key={listing._id}>
         <Link to={`/listing/${listing._id}`} >
-          <img className='w-12 h-12' src={home} alt='image'/>
+          <img className='w-12 h-12 shrink-0' src={home} alt='image'/>
           </Link>
-          <Link to={`/listing/${listing._id}`}>
-          <p className='flex-1 hover:underline truncate'>{listing.name}</p>
+          <Link to={`/listing/${listing._id}` } className='flex-1 min-w-0'>
+          <p className='flex-1 truncate hover:underline '>{listing.name}</p>
           </Link>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2 shrink-0'>
           {/* stavio bih link koji vodi na stranicu koja kad se ocita ima postake iz liatinga sa ogovarajucim id jem edit-listing/listing.id */}
            <Link to={`/edit-listing/${listing._id}`}>
             <button className='text-green-700 uppercase'>Edit</button>
