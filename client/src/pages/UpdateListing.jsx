@@ -34,7 +34,12 @@ const handleChange = (e) =>{
     })
   }
 
-  if(e.target.id === 'parking' || e.target.id === 'furnished'){
+  if((e.target.id === 'parking' || 
+     e.target.id === 'furnished' ||
+     e.target.id === 'montainView'|| 
+     e.target.id === 'seaView' || 
+     e.target.id === 'swimingPool'|| 
+     e.target.id === 'airCondition')){
     setFormData({
       ...formData,
       [e.target.id]:e.target.checked
@@ -117,7 +122,7 @@ const handleSubmit = async(e) => {
         <input type='text' placeholder='Address' id='address' className='border p-3 rounded-lg' required onChange={handleChange} value={formData.address}/>
      {/* kontainer sa check box-om */}
      <div className='flex justify-between flex-wrap'>
-        <div className='flex gap-2'>
+         <div className='flex gap-2'>
           <input type='checkbox' id='sale' className='w-5' onChange={handleChange}  checked={formData.type === 'sale'}/>
           <span>Sell</span>
         </div>
@@ -130,12 +135,41 @@ const handleSubmit = async(e) => {
           <span>Parking Spot</span>
         </div>
         <div className='flex gap-2'>
+          <input type='checkbox' id='swimingPool' className='w-5' onChange={handleChange}  checked={formData.swimingPool} />
+          <span>Swiming Pool</span>
+        </div>
+        <div className='flex gap-2'>
           <input type='checkbox' id='furnished' className='w-5' onChange={handleChange}  checked={formData.furnished}/>
           <span>Furnished</span>
         </div>
+        <div className='flex gap-2'>
+          <input type='checkbox' id='airCondition' className='w-5' onChange={handleChange}  checked={formData.airCondition}/>
+          <span>Air Condition</span>
+        </div>
+        <div className='flex gap-2'>
+          <input type='checkbox' id='seaView' className='w-5' onChange={handleChange}  checked={formData.seaView}/>
+          <span>Sea View</span>
+        </div>
+        <div className='flex gap-2'>
+          <input type='checkbox' id='montainView' className='w-5' onChange={handleChange}  checked={formData.montainView}/>
+          <span>Montain View</span>
+        </div>
+        
      </div>
      {/* kontainer za unos soba i kupatila i cijene  */}
      <div className='flex flex-wrap gap-3 sm:flex-row justify-between'>
+       <div className='flex items-center gap-3'>
+          <input type='number' min='1' max='10000' required id='area' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.area} />
+          <span>Area</span>
+        </div>
+        <div className='flex items-center gap-3'>
+          <input type='number' min='1' max='10000000' id='landArea' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.landArea} />
+          <span>Land Area</span>
+        </div>
+        <div className='flex items-center gap-3'>
+          <input type='number' min='1' max='20' id='floor' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.floor} />
+          <span>Floor</span>
+        </div>
         <div className='flex items-center gap-3'>
           <input type='number' min='1' max='10' required id='bedrooms' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.bedrooms} />
           <span>Beds</span>
@@ -143,6 +177,10 @@ const handleSubmit = async(e) => {
         <div className='flex items-center gap-3'>
           <input type='number' min='1' max='10' required id='bathrooms' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.bathrooms} />
           <span>Bathrooms</span>
+        </div>
+        <div className='flex items-center gap-3'>
+          <input type='number' min='1' max='10' required id='balcony' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.balcony} />
+          <span>Balcony</span>
         </div>
         <div className='flex items-center gap-3'>
           <input type='number' min='1' max='100000000' required  id='regularPrice' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.regularPrice} />

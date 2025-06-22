@@ -103,15 +103,15 @@ console.log(formData);
     <main className='p-3 max-w-3xl mx-auto'>
    
     <h1 className='text-3xl font-semibold text-center my-7'>Create Listing</h1>
-    <form onSubmit={handleSubmit} className='flex flex-col'>
+    <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
     {/* kontainer za unos podataka */}
       <div className='flex flex-col gap-4 flex-1'>
       
-        <input type='text' placeholder='Name' id='name' className='border p-3 rounded-lg' maxLength='62' minLength='10' required onChange={handleChange} value={formData.name}/>
+        <input type='text' placeholder='Name' id='name' className='border p-3 rounded-lg' maxLength='162' minLength='10' required onChange={handleChange} value={formData.name}/>
         <textarea type='textarea' placeholder='Description' id='description' className='border p-3 rounded-lg' required onChange={handleChange} value={formData.description} />
         <input type='text' placeholder='Address' id='address' className='border p-3 rounded-lg' required onChange={handleChange} value={formData.address}/>
      {/* kontainer sa check box-om */}
-     <div className='flex justify-between flex-wrap'>
+     <div className='flex flex-wrap gap-7'>
         <div className='flex gap-2'>
           <input type='checkbox' id='sale' className='w-5' onChange={handleChange}  checked={formData.type === 'sale'}/>
           <span>Sell</span>
@@ -123,6 +123,10 @@ console.log(formData);
         <div className='flex gap-2'>
           <input type='checkbox' id='parking' className='w-5' onChange={handleChange}  checked={formData.parking} />
           <span>Parking Spot</span>
+        </div>
+        <div className='flex gap-2'>
+          <input type='checkbox' id='swimingPool' className='w-5' onChange={handleChange}  checked={formData.swimingPool} />
+          <span>Swimming Pool</span>
         </div>
         <div className='flex gap-2'>
           <input type='checkbox' id='furnished' className='w-5' onChange={handleChange}  checked={formData.furnished}/>

@@ -58,24 +58,25 @@ console.log(listingData);
 
       {/* Detalji */}
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Property Details</h2>
+        <h2 className="text-2xl font-semibold mb-4"></h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-gray-800 text-sm">
     <div><span className="font-semibold">Price:</span> {listingData.regularPrice} € </div>
     <div><span className="font-semibold">Area:</span> {listingData.area} m²</div>
     {listingData.landArea && <div><span className="font-semibold">Land Area:</span> {listingData.landArea} m²</div>}
     {listingData.floor && <div><span className="font-semibold">Floor:</span> {listingData.floor} </div>}
+    <div><span className="font-semibold">Location:</span> {listingData.address} </div>
+    {listingData.parking && <div className="flex items-center gap-3"><span className="font-semibold">Parking:</span> <MdCheck size={26} color="green"/> </div>}
     {listingData.swimingPool && <div className="flex items-center gap-3"><span className="font-semibold">Swimming Pool:</span> <MdCheck size={26} color="green"/> </div>}
     {listingData.airCondition &&  <div className="flex items-center gap-3"><span className="font-semibold">Air Condition:</span> <MdCheck size={26} color="green" /></div>}
     {listingData.seaView &&  <div className="flex items-center gap-3"><span className="font-semibold">Sea View:</span> <MdCheck size={26} color="green" /></div>}
     {listingData.MonatinView &&  <div className="flex items-center gap-3"><span className="font-semibold">Montain View:</span> <MdCheck size={26} color="green" /></div>}
     {listingData.balcony &&  <div className="flex items-center gap-3"><span className="font-semibold">Balcony:</span> <MdCheck size={26} color="green" /> </div>}
-    <div><span className="font-semibold">Location:</span> {listingData.address} </div>
         </div>
       </section>
 
       {/* Kontakt forma */}
       <section>
-        <h2 className="text-2xl font-semibold mb-3">Kontaktirajte prodavca</h2>
+        <h2 className="text-2xl font-semibold mb-3">Kontaktirajte nas</h2>
         <form className="space-y-4">
           <textarea
             placeholder="Vaša poruka..."
@@ -84,7 +85,7 @@ console.log(listingData);
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
+            className="bg-blue-600 w-full text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
           >
             Pošalji poruku
           </button>
