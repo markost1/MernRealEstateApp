@@ -50,10 +50,36 @@ const listingSchema = new mongoose.Schema({
     //     type:Array,
     //     required:true,
     // },
+    floor:{
+    type:Number,
+    },
+    area:{
+    type:Number,
+    required:true,
+    },
+    landArea:{
+        type:Number,
+    },
+     swimingPool:{
+        type:Boolean
+    },
+     airCondition:{
+        type:Boolean
+    },
+     seaView:{
+        type:Boolean
+    },
+     montainView:{
+        type:Boolean
+    },
+    balcony:{
+        type:Number,
+    },
     userRef:{
         type:String,
         required:true,
     },
+   
 },
     {timestamps:true}
 )

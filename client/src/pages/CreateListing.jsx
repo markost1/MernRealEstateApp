@@ -10,12 +10,22 @@ const [formData, setFormData] = useState({
   name:'',
   description: '',
   address: '',
-  regularPrice: 50,
+  type:'rent',
+  area:'',
+  landArea:'',
+  floor:1,
   bathrooms:1,
   bedrooms:1,
+  balcony:1,
+  regularPrice: 50,
   furnished:true,
   parking: true,
-  type:'rent',
+  montainView:false,
+  seaView:false,
+  swimingPool:false,
+  airCondition:false,
+
+
 
 });
 const [error, setError] = useState(false)
@@ -30,8 +40,13 @@ const handleChange = (e) =>{
     })
   }
 
-  if(e.target.id === 'parking' || e.target.id === 'furnished'){
-    setFormData({
+  if(e.target.id === 'parking' || 
+     e.target.id === 'furnished' ||
+     e.target.id === 'montainView'|| 
+     e.target.id === 'seaView' || 
+     e.target.id === 'swimingPool'|| 
+     e.target.id === 'airCondition'){
+  setFormData({
       ...formData,
       [e.target.id]:e.target.checked
     })
@@ -113,16 +128,45 @@ console.log(formData);
           <input type='checkbox' id='furnished' className='w-5' onChange={handleChange}  checked={formData.furnished}/>
           <span>Furnished</span>
         </div>
+        <div className='flex gap-2'>
+          <input type='checkbox' id='airCondition' className='w-5' onChange={handleChange}  checked={formData.airCondition}/>
+          <span>Air Condition</span>
+        </div>
+        <div className='flex gap-2'>
+          <input type='checkbox' id='seaView' className='w-5' onChange={handleChange}  checked={formData.seaView}/>
+          <span>Sea View</span>
+        </div>
+        <div className='flex gap-2'>
+          <input type='checkbox' id='montainView' className='w-5' onChange={handleChange}  checked={formData.montainView}/>
+          <span>Montain View</span>
+        </div>
+        
      </div>
      {/* kontainer za unos soba i kupatila i cijene  */}
      <div className='flex flex-wrap gap-3 sm:flex-row justify-between'>
+        <div className='flex items-center gap-3'>
+          <input type='number' min='1' max='10000' required id='area' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.area} />
+          <span>Area</span>
+        </div>
+        <div className='flex items-center gap-3'>
+          <input type='number' min='1' max='10000000' id='landArea' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.landArea} />
+          <span>Land Area</span>
+        </div>
+        <div className='flex items-center gap-3'>
+          <input type='number' min='1' max='20' id='floor' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.floor} />
+          <span>Floor</span>
+        </div>
         <div className='flex items-center gap-3'>
           <input type='number' min='1' max='10' required id='bedrooms' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.bedrooms} />
           <span>Beds</span>
         </div>
         <div className='flex items-center gap-3'>
-          <input type='number' min='1' max='10' required id='bathrooms' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.bathrooms} />
+          <input type='number' min='1' max='30' required id='bathrooms' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.bathrooms} />
           <span>Bathrooms</span>
+        </div>
+        <div className='flex items-center gap-3'>
+          <input type='number' min='1' max='10' required id='balcony' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.balcony} />
+          <span>Balcony</span>
         </div>
         <div className='flex items-center gap-3'>
           <input type='number' min='1' max='100000000' required  id='regularPrice' className='p-3 border border-gray-400 rounded-lg' onChange={handleChange} value={formData.regularPrice} />
