@@ -1,21 +1,30 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { MdCheck } from 'react-icons/md';
 import home from '../assets/home.jpg'
+import { useSelector } from "react-redux";
 
 
 export default function Listing() {
 
 const params = useParams();
 const [listingData, setListingData] = useState({});
+const [landLord, setLandLord] = useState()
+const [message,setMessage] = useState("");
+const{currentUser} = useSelector(state => state.user)
+
+console.log('trenutni korisnik aplikacije', currentUser);
+
+
+
 
 useEffect(()=>{
 
     const fetchListing = async() =>{
         const listingId = params.listingId
-        console.log(listingId);
         
-        const res = await fetch(`/api/listing/getListing/${params.listingId}`);
+        
+        const res = await fetch(`/api/listing/getListing/${listingId}`);
         const data = await res.json()
         if(data.success === false){
             console.log(data.message);
@@ -24,15 +33,36 @@ useEffect(()=>{
 
         setListingData(data)
         
-        
     }
-
 
     fetchListing();
 
+     
+
 },[params.listingId])
 
-console.log(listingData);
+useEffect(()=>{
+const fetchlandLord = async()=>{
+  if(!listingData || !listingData.userRef) return;
+         
+          const res = await fetch(`/api/user/${listingData.userRef}`)
+          const data = await res.json()
+          if(data.success === false){
+            console.log(data.message);
+            return;
+            
+          }
+          setLandLord(data)
+          
+      }
+
+     fetchlandLord();
+
+},[listingData])
+
+console.log('podaci o listingu',listingData);
+console.log('podaci o oglasivacu',landLord);
+
 
   return (
       <div className="max-w-4xl mx-auto p-6 space-y-8">
@@ -75,22 +105,37 @@ console.log(listingData);
       </section>
 
       {/* Kontakt forma */}
-      <section>
+      { currentUser && currentUser._id !== listingData.userRef && landLord && 
+    (  <section>
         <h2 className="text-2xl font-semibold mb-3">Kontaktirajte nas</h2>
-        <form className="space-y-4">
+        <form className="space-y-4" 
+        onSubmit={(e)=>{
+          e.preventDefault();
+          window.location.href = `mailto:${landLord.email}?subject=Upit%20za%20oglas&body=${encodeURIComponent(message)}`;
+      }}
+        >
           <textarea
             placeholder="Vaša poruka..."
             className="w-full p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows={5}
+            onChange={(e)=>{
+              setMessage(e.target.value)
+            }}
+            value={message}
           />
+
+          
           <button
             type="submit"
             className="bg-blue-600 w-full text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
           >
             Pošalji poruku
           </button>
+          
         </form>
       </section>
+      )}
+   
     </div>
   )
 }
