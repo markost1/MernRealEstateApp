@@ -86,3 +86,50 @@ export const getListingData = async(req,res,next) => {
         return next(error)
     }
 }
+
+export const getListings =async (req,res,next) =>{
+    try {
+        const limit = parseInt(req.query.limit) || 9;
+        const startIndex = parseInt(req.query.startIndex) || 0;
+
+        const typeParam = req.query.type;
+        const typeFilter =
+         typeParam === undefined || typeParam === 'all'
+        ? { $in: ['sale', 'rent'] }
+        : typeParam;
+
+
+        const searchTerm = req.query.searchTerm || '';
+
+        const minPrice = parseInt(req.query.minPrice) || 0;
+        const maxPrice = parseInt(req.query.maxPrice) || Number.MAX_SAFE_INTEGER;
+
+          let categoryFilter;
+    if (req.query.category) {
+      const categories = req.query.category.split(',').map(c => c.trim());
+      categoryFilter = { $in: categories };
+    } else {
+      categoryFilter = { $exists: true }; // Ne filtrira po kategoriji
+    }
+
+
+        const sort = req.query.sort || 'createdAt';
+        const order = req.query.order || 'desc';
+
+         const listings = await Listing.find({
+            name:{$regex:searchTerm, $options:'i'},
+            type:typeFilter,
+            regularPrice:{$gte:minPrice, $lte:maxPrice},
+            category: categoryFilter,
+         }).sort({
+            [sort]:order
+         }).limit(limit)
+         .skip(startIndex)
+
+         return res.status(200).json(listings)
+
+        
+    } catch (error) {
+        return next(handleError(500,'Server error while fetching listings'));
+    }
+}

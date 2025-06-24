@@ -18,6 +18,7 @@ const [formData, setFormData] = useState({
   furnished:true,
   parking: true,
   type:'rent',
+  category:[],
 
 });
 const [error, setError] = useState(false)
@@ -54,6 +55,22 @@ const handleChange = (e) =>{
   }
 
 }
+
+const handleCategoryChange = (e) =>{
+  const {value,checked} = e.target;
+  if(checked){
+    setFormData((prev) =>({
+      ...prev,
+      category:[...prev.category,value]
+    }))
+  }else{
+    setFormData((prev) =>({
+      ...prev,
+      category:[...prev.category.filter(cat => cat !== value)]
+    }))
+  }
+}
+
 
 const handleSubmit = async(e) => {
   e.preventDefault();
@@ -156,6 +173,31 @@ const handleSubmit = async(e) => {
         </div>
         
      </div>
+      <div>
+      <h2>Category</h2>
+       <div className='flex gap-2'>
+          <input type='checkbox' id='category-apartment'value='Apartment' className='w-5' onChange={handleCategoryChange}  checked={formData.category.includes('Apartment')}/>
+          <span>Apartment</span>
+        </div> <div className='flex gap-2'>
+          <input type='checkbox' id='category-house'value='House' className='w-5' onChange={handleCategoryChange}  checked={formData.category.includes('House')}/>
+          <span>House</span>
+        </div> <div className='flex gap-2'>
+          <input type='checkbox' id='category-villas' value='Villas' className='w-5' onChange={handleCategoryChange}  checked={formData.category.includes('Villas')}/>
+          <span>Villas</span>
+        </div> <div className='flex gap-2'>
+          <input type='checkbox' id='category-land' value='Land' className='w-5' onChange={handleCategoryChange}  checked={formData.category.includes('Land')}/>
+          <span>Land</span>
+        </div> <div className='flex gap-2'>
+          <input type='checkbox' id='category-commercial'value='Commercial' className='w-5' onChange={handleCategoryChange}  checked={formData.category.includes('Commercial')}/>
+          <span>Commercial</span>
+        </div> <div className='flex gap-2'>
+          <input type='checkbox' id='category-hotels' value='Hotels' className='w-5' onChange={handleCategoryChange}  checked={formData.category.includes('Hotels')}/>
+          <span>Hotels</span>
+        </div> <div className='flex gap-2'>
+          <input type='checkbox' id='category-garage' value='Garage' className='w-5' onChange={handleCategoryChange}  checked={formData.category.includes('Garage')}/>
+          <span>Garage</span>
+        </div>
+    </div>
      {/* kontainer za unos soba i kupatila i cijene  */}
      <div className='flex flex-wrap gap-3 sm:flex-row justify-between'>
        <div className='flex items-center gap-3'>

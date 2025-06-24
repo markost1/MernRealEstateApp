@@ -14,6 +14,11 @@ const listingSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    category:{
+        type:[String],
+        enum:['Apartment','House','Villas','Land','Commercial','Hotels','Garage'],
+        // required:true,
+    },
     regularPrice:{
         type:Number,
         required:true,
@@ -55,7 +60,7 @@ const listingSchema = new mongoose.Schema({
     },
     area:{
     type:Number,
-    required:true,
+   // required:true,
     },
     landArea:{
         type:Number,
