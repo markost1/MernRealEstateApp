@@ -1,10 +1,14 @@
 import { useState } from "react"
 import { useSelector } from "react-redux";
+import LocationComp from "../components/LocationComp";
 
 
 export default function CreateListing() {
 
 const {currentUser} = useSelector(state => state.user)
+
+
+
 
 const [formData, setFormData] = useState({
   name:'',
@@ -25,6 +29,7 @@ const [formData, setFormData] = useState({
   swimingPool:false,
   airCondition:false,
   category:[],
+  location:[],
 
 
 
@@ -162,6 +167,8 @@ console.log(formData);
         </div>
         
      </div>
+     <LocationComp formData={formData} setFormData={setFormData} />
+
     <div>
       <h2>Category</h2>
        <div className='flex gap-2'>
