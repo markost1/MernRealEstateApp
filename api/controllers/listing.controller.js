@@ -112,6 +112,13 @@ export const getListings =async (req,res,next) =>{
       categoryFilter = { $exists: true }; // Ne filtrira po kategoriji
     }
 
+    let locationFilter;
+    if (req.query.location) {
+        const location = req.query.location.split(',').map(l=>l.trim())
+        locationFilter = {$in:location}
+    }else{
+       locationFilter = {$exists:true, $ne:''}
+    }
 
         const sort = req.query.sort || 'createdAt';
         const order = req.query.order || 'desc';
@@ -121,6 +128,7 @@ export const getListings =async (req,res,next) =>{
             type:typeFilter,
             regularPrice:{$gte:minPrice, $lte:maxPrice},
             category: categoryFilter,
+            location:locationFilter,
          }).sort({
             [sort]:order
          }).limit(limit)
