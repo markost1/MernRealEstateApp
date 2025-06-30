@@ -19,6 +19,9 @@ const listingSchema = new mongoose.Schema({
         enum:['Apartment','House','Villas','Land','Commercial','Hotels','Garage'],
         // required:true,
     },
+    location:{
+        type:[String],
+    },
     regularPrice:{
         type:Number,
         required:true,

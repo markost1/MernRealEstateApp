@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react"
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import LocationComp from "../components/LocationComp";
 
 
 export default function CreateListing() {
@@ -12,13 +13,22 @@ const [formData, setFormData] = useState({
   name:'',
   description: '',
   address: '',
-  regularPrice: 50,
-  bathrooms:1,
-  bedrooms:1,
+  type:'rent',
+  area:'',
+  landArea:'',
+  floor:0,
+  bathrooms:0,
+  bedrooms:0,
+  balcony:0,
+  regularPrice: 0,
   furnished:true,
   parking: true,
-  type:'rent',
+  montainView:false,
+  seaView:false,
+  swimingPool:false,
+  airCondition:false,
   category:[],
+  location:[],
 
 });
 const [error, setError] = useState(false)
@@ -125,6 +135,8 @@ const handleSubmit = async(e) => {
   }
   fetchListing()
  },[params.listingId])
+ console.log(formData);
+ 
 
   return (
     <main className='p-3 max-w-3xl mx-auto'>
@@ -173,6 +185,7 @@ const handleSubmit = async(e) => {
         </div>
         
      </div>
+     <LocationComp formData={formData} setFormData={setFormData}/>
       <div>
       <h2>Category</h2>
        <div className='flex gap-2'>
