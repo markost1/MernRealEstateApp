@@ -87,57 +87,81 @@ export const getListingData = async(req,res,next) => {
     }
 }
 
-export const getListings =async (req,res,next) =>{
-    try {
-        const limit = parseInt(req.query.limit) || 9;
-        const startIndex = parseInt(req.query.startIndex) || 0;
 
-        const typeParam = req.query.type;
-        const typeFilter =
-         typeParam === undefined || typeParam === 'all'
-        ? { $in: ['sale', 'rent'] }
-        : typeParam;
+export const getListings = async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit) || 9;
+    const startIndex = parseInt(req.query.startIndex) || 0;
 
+    // Osnovni filter objekat koji ćemo postepeno puniti
+    const filters = {};
 
-        const searchTerm = req.query.searchTerm || '';
+    // TYPE filter
+    const typeParam = req.query.type;
+    if (typeParam && typeParam !== 'all') {
+      filters.type = typeParam; // npr. 'sale' ili 'rent'
+    }
 
-        const minPrice = parseInt(req.query.minPrice) || 0;
-        const maxPrice = parseInt(req.query.maxPrice) || Number.MAX_SAFE_INTEGER;
+    // SEARCH (pretraga po imenu)
+    const searchTerm = req.query.searchTerm || '';
+    if (searchTerm) {
+      filters.name = { $regex: searchTerm, $options: 'i' };
+    }
 
-          let categoryFilter;
+    // Cijena
+    const minPrice = parseInt(req.query.minPrice) || 0;
+    const maxPrice = parseInt(req.query.maxPrice) || Number.MAX_SAFE_INTEGER;
+    filters.regularPrice = { $gte: minPrice, $lte: maxPrice };
+
+    // Kategorija
     if (req.query.category) {
       const categories = req.query.category.split(',').map(c => c.trim());
-      categoryFilter = { $in: categories };
-    } else {
-      categoryFilter = { $exists: true }; // Ne filtrira po kategoriji
+      if (categories.length > 0) {
+        filters.category = { $in: categories };
+      }
     }
 
-    let locationFilter;
+    // Lokacija
     if (req.query.location) {
-        const location = req.query.location.split(',').map(l=>l.trim())
-        locationFilter = {$in:location}
-    }else{
-       locationFilter = {$exists:true, $ne:''}
+      const locations = req.query.location.split(',').map(l => l.trim());
+      if (locations.length > 0) {
+        filters.location = { $in: locations };
+      }
     }
 
-        const sort = req.query.sort || 'createdAt';
-        const order = req.query.order || 'desc';
-
-         const listings = await Listing.find({
-            name:{$regex:searchTerm, $options:'i'},
-            type:typeFilter,
-            regularPrice:{$gte:minPrice, $lte:maxPrice},
-            category: categoryFilter,
-            location:locationFilter,
-         }).sort({
-            [sort]:order
-         }).limit(limit)
-         .skip(startIndex)
-
-         return res.status(200).json(listings)
-
-        
-    } catch (error) {
-        return next(handleError(500,'Server error while fetching listings'));
+    // Broj soba
+    if (req.query.bedrooms) {
+      const bedrooms = req.query.bedrooms
+        .split(',')
+        .map(n => parseInt(n.trim()))
+        .filter(n => !isNaN(n));
+      if (bedrooms.length > 0) {
+        filters.bedrooms = { $in: bedrooms };
+      }
     }
-}
+
+    // Sortiranje
+    const sortField = req.query.sort || 'createdAt';
+    const sortOrder = req.query.order === 'asc' ? 1 : -1;
+
+    // DEBUG log - da vidiš šta se zaista šalje ka MongoDB
+    console.log('Primijenjeni filteri:', filters);
+
+    // Ukupan broj rezultata (za paginaciju)
+    const totalCount = await Listing.countDocuments(filters);
+
+    // Pravi upit
+    const listings = await Listing.find(filters)
+      .sort({ [sortField]: sortOrder })
+      .skip(startIndex)
+      .limit(limit);
+
+    return res.status(200).json({
+      totalCount,
+      listings,
+    });
+
+  } catch (error) {
+    return next(handleError(500, 'Server error while fetching listings'));
+  }
+};
