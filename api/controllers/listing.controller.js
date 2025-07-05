@@ -91,7 +91,8 @@ export const getListingData = async(req,res,next) => {
 export const getListings = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 9;
-    const startIndex = parseInt(req.query.startIndex) || 0;
+    const page = parseInt(req.query.page) || 0;
+    const skip = (page-1)*limit
 
     // Osnovni filter objekat koji ćemo postepeno puniti
     const filters = {};
@@ -144,7 +145,7 @@ export const getListings = async (req, res, next) => {
     const sortField = req.query.sort || 'createdAt';
     const sortOrder = req.query.order === 'asc' ? 1 : -1;
 
-    // DEBUG log - da vidiš šta se zaista šalje ka MongoDB
+    // DEBUG log -  šta se zaista šalje ka MongoDB
     console.log('Primijenjeni filteri:', filters);
 
     // Ukupan broj rezultata (za paginaciju)
@@ -153,11 +154,13 @@ export const getListings = async (req, res, next) => {
     // Pravi upit
     const listings = await Listing.find(filters)
       .sort({ [sortField]: sortOrder })
-      .skip(startIndex)
+      .skip(skip)
       .limit(limit);
 
     return res.status(200).json({
       totalCount,
+      totalPages:Math.ceil(totalCount / limit),
+      currentPage:page,
       listings,
     });
 
