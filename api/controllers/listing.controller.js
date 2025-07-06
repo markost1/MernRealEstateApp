@@ -90,8 +90,9 @@ export const getListingData = async(req,res,next) => {
 
 export const getListings = async (req, res, next) => {
   try {
+
     const limit = parseInt(req.query.limit) || 9;
-    const page = parseInt(req.query.page) || 0;
+    const page = parseInt(req.query.page) || 1;
     const skip = (page-1)*limit
 
     // Osnovni filter objekat koji ćemo postepeno puniti
@@ -165,6 +166,8 @@ export const getListings = async (req, res, next) => {
     });
 
   } catch (error) {
+    
+    console.log('getListings Greska' , error);
     return next(handleError(500, 'Server error while fetching listings'));
   }
 };

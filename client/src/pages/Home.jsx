@@ -6,6 +6,8 @@ import { CiLocationOn } from "react-icons/ci";
 import { MdEuro } from "react-icons/md";
 import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "../components/Pagination";
+import LocationComp from "../components/LocationComp";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -17,6 +19,10 @@ const pageParam = parseInt(searchParams.get("page")) || 1;
 const [currentPage,setCurrentPage] = useState(pageParam)
 const [totalPages,setTotalPages] = useState(1)
 const [showListings, setShowListings] = useState([])
+const[formData,setFormData] = useState({
+  location:[]
+})
+const navigate = useNavigate()
 
 useEffect(()=>{
 
@@ -59,8 +65,34 @@ const handlePageChange = (page)=>{
   setSearchParams({page})
   setCurrentPage(page)
 }
+
+console.log(formData);
+
+const handleSubmit = (e)=>{
+  e.preventDefault()
+
+  const urlParams =  new URLSearchParams()
+
+  if(formData.location.length > 0 ){
+    urlParams.set('location', formData.location.join(','))
+    
+  }
+  const searchQuery = urlParams.toString();
+
+  navigate(`/search?${searchQuery}`)
+
+}
+
 return (
-  <div>
+  <div>    
+
+  {/* filter */}
+  <div className="py-6">
+    <form  onSubmit={handleSubmit} className="flex justify-center">
+      <LocationComp formData={formData}  setFormData={setFormData}/>
+      <button className="border rounded-lg p-3">Search</button>
+    </form>
+  </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 py-4">
       {showListings && showListings.length > 0 ? showListings.map((listing) => (
         <Link key={listing._id} to={`/listing/${listing._id}`}>
