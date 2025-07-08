@@ -1,4 +1,4 @@
-const allLocation = {
+export const allLocation = {
         Budva:[  "Budva",
   "Bečići",
   "Rafailovići",
@@ -90,4 +90,14 @@ const allLocation = {
 
     }
 
-    export default allLocation;
+
+export const category = ['Apartment',
+                         'House',
+                         'Villas',
+                         'Land',
+                         'Commercial',
+                         'Hotels',
+                         'Garage',
+                        ]
+    
+    

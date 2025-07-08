@@ -9,6 +9,7 @@ import Pagination from "../components/Pagination";
 import LocationComp from "../components/LocationComp";
 import { useNavigate } from "react-router-dom";
 import TypeComp from "../components/TypeComp";
+import CategoryComp from "../components/CategoryComp";
 
 
 
@@ -23,6 +24,7 @@ const [showListings, setShowListings] = useState([])
 const[formData,setFormData] = useState({
   location:[],
   type:'all',
+  category:[],
 })
 const navigate = useNavigate()
 
@@ -83,9 +85,14 @@ const handleSubmit = (e)=>{
   if(formData.type){
     urlParams.set('type',formData.type)
   }
+
+if(formData.category.length > 0){
+  urlParams.set('category', formData.category.join(','))
+}
+
   const searchQuery = urlParams.toString();
 
-  navigate(`/search?${searchQuery}`)
+  navigate(`/search?${searchQuery}&&limit=100`)
 
 }
 
@@ -97,6 +104,7 @@ return (
     <form  onSubmit={handleSubmit} className="flex flex-col justify-center">
       <LocationComp formData={formData}  setFormData={setFormData}/>
       <TypeComp formData={formData} setFormData={setFormData} />
+      <CategoryComp formData={formData} setFormData={setFormData} />
       <button className="border rounded-lg p-3">Search</button>
     </form>
   </div>

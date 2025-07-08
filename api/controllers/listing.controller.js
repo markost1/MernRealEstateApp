@@ -116,20 +116,28 @@ export const getListings = async (req, res, next) => {
     filters.regularPrice = { $gte: minPrice, $lte: maxPrice };
 
     // Kategorija
-    if (req.query.category) {
-      const categories = req.query.category.split(',').map(c => c.trim());
-      if (categories.length > 0) {
-        filters.category = { $in: categories };
-      }
-    }
+  if (req.query.category) {
+  const categories = req.query.category
+    .split(',')
+    .map(c => c.trim())
+    .filter(c => c); // uklanja prazne stringove
+
+  if (categories.length > 0) {
+    filters.category = { $in: categories };
+  }
+}
 
     // Lokacija
-    if (req.query.location) {
-      const locations = req.query.location.split(',').map(l => l.trim());
-      if (locations.length > 0) {
-        filters.location = { $in: locations };
-      }
-    }
+if (req.query.location) {
+  const locations = req.query.location
+    .split(',')
+    .map(l => l.trim())
+    .filter(l => l); // uklanja prazne
+
+  if (locations.length > 0) {
+    filters.location = { $in: locations };
+  }
+}
 
     // Broj soba
     if (req.query.bedrooms) {

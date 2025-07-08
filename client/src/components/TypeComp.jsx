@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 
 
 
-export default function LocationComp({formData, setFormData}) {
+export default function TypeComp({formData, setFormData}) {
 
     const[showDropdown, setShowDropdown] = useState(false)
     const dropdownrRef = useRef(null);
