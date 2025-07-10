@@ -10,6 +10,7 @@ import LocationComp from "../components/LocationComp";
 import { useNavigate } from "react-router-dom";
 import TypeComp from "../components/TypeComp";
 import CategoryComp from "../components/CategoryComp";
+import MinMaxPriceComp from "../components/MinMaxPriceComp";
 
 
 
@@ -25,6 +26,8 @@ const[formData,setFormData] = useState({
   location:[],
   type:'all',
   category:[],
+  minPrice:1,
+  maxPrice:1000000000,
 })
 const navigate = useNavigate()
 
@@ -82,12 +85,19 @@ const handleSubmit = (e)=>{
     
   }
 
-  if(formData.type){
+if(formData.type && formData.type !== 'all'){
     urlParams.set('type',formData.type)
   }
 
 if(formData.category.length > 0){
   urlParams.set('category', formData.category.join(','))
+}
+
+if(formData.minPrice){
+  urlParams.set('minPrice', formData.minPrice)
+}
+if(formData.maxPrice){
+  urlParams.set('maxPrice', formData.maxPrice)
 }
 
   const searchQuery = urlParams.toString();
@@ -100,13 +110,17 @@ return (
   <div>    
 
   {/* filter */}
-  <div className="py-6 ">
-    <form  onSubmit={handleSubmit} className="flex flex-col justify-center">
+  <div className="flex justify-center items-center">
+  <div className="py-6 max-w-md mx-auto">
+  <h1 className="text-center p-3 font-semibold ">Pretraga Nekretnina</h1>
+    <form  onSubmit={handleSubmit} className="flex flex-col justify-center gap-2">
       <LocationComp formData={formData}  setFormData={setFormData}/>
       <TypeComp formData={formData} setFormData={setFormData} />
       <CategoryComp formData={formData} setFormData={setFormData} />
+      <MinMaxPriceComp formData={formData} setFormData={setFormData} />
       <button className="border rounded-lg p-3">Search</button>
     </form>
+  </div>
   </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 py-4">
       {showListings && showListings.length > 0 ? showListings.map((listing) => (
