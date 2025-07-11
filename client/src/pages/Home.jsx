@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import TypeComp from "../components/TypeComp";
 import CategoryComp from "../components/CategoryComp";
 import MinMaxPriceComp from "../components/MinMaxPriceComp";
+import BedroomsComp from "../components/BedroomsComp";
 
 
 
@@ -28,6 +29,7 @@ const[formData,setFormData] = useState({
   category:[],
   minPrice:1,
   maxPrice:1000000000,
+  bedrooms:[],
 })
 const navigate = useNavigate()
 
@@ -100,6 +102,10 @@ if(formData.maxPrice){
   urlParams.set('maxPrice', formData.maxPrice)
 }
 
+if(formData.bedrooms.length > 0){
+  urlParams.set('bedrooms',formData.bedrooms)
+}
+
   const searchQuery = urlParams.toString();
 
   navigate(`/search?${searchQuery}&&limit=100`)
@@ -118,7 +124,8 @@ return (
       <TypeComp formData={formData} setFormData={setFormData} />
       <CategoryComp formData={formData} setFormData={setFormData} />
       <MinMaxPriceComp formData={formData} setFormData={setFormData} />
-      <button className="border rounded-lg p-3">Search</button>
+      <BedroomsComp formData={formData} setFormData={setFormData}/>
+      <button className="border rounded-lg p-3 bg-blue-600 text-white uppercase hover:opacity-90">Search</button>
     </form>
   </div>
   </div>
