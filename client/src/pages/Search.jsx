@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import home from '../assets/home.jpg'
+import { CiLocationOn } from 'react-icons/ci'
+import { MdCropFree, MdEuro } from 'react-icons/md'
 
 export default function Search() {
     const [searchParams] = useSearchParams()
@@ -22,6 +25,39 @@ export default function Search() {
         
 
   return (
-    <div>Search</div>
+   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 py-4">
+   {
+    listings && listings.length > 0 ? 
+    listings.map((listing)=>(
+        <Link key={listing._id} to={`/listing/${listing._id}`}>
+          <div className="bg-white rounded-lg shadow-md overflow-hidden relative min-h-[420px] hover:shadow-lg transition">
+            <img src={home} alt="image" className="w-full h-48 object-cover" />
+            <span className="absolute top-3 left-5 bg-blue-600 p-2 text-white rounded-lg uppercase">
+              For {listing.type}
+            </span>
+            <div className="p-4">
+              <h2 className="text-lg font-semibold line-clamp-2">{listing.name}</h2>
+              <span className="flex gap-2 items-center mt-3">
+                <CiLocationOn />
+                <p className="font-semibold">{listing.location}</p>
+              </span>
+              <span className="flex gap-2 items-center mt-3">
+                <p className="text-lg font-semibold">{listing.regularPrice}</p>
+                <MdEuro />
+              </span>
+            </div>
+            <div className="p-3">
+              <span className="flex gap-2 items-center">
+                <MdCropFree />
+                {listing.area} m2
+              </span>
+            </div>
+          </div>
+        </Link>
+    )):'There is no listings'
+
+   }
+    </div>
   )
+  
 }
