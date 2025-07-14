@@ -108,7 +108,7 @@ if(formData.bedrooms.length > 0){
 
   const searchQuery = urlParams.toString();
 
-  navigate(`/search?${searchQuery}&&limit=100`)
+  navigate(`/search?${searchQuery}`)
 
 }
 

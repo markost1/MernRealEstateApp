@@ -3,28 +3,114 @@ import { Link, useSearchParams } from 'react-router-dom'
 import home from '../assets/home.jpg'
 import { CiLocationOn } from 'react-icons/ci'
 import { MdCropFree, MdEuro } from 'react-icons/md'
+import Pagination from '../components/Pagination'
 
 export default function Search() {
-    const [searchParams] = useSearchParams()
+    
+    const [searchParams,setSearchParams] = useSearchParams()
+    const pageParam = parseInt(searchParams.get("page")) || 1;
     const[listings,setListings] = useState([])
+   // const [currentPage,setCurrentPage] = useState(pageParam)
+    const [totalPages,setTotalPages] = useState(1)
 
-    useEffect(()=>{
-        const fetchFilteredListings =  async()=>{
-            const queryString = searchParams.toString()
 
-            const res = await fetch(`/api/listing/get?${queryString}`)
-            const data = await res.json();
-            setListings(data.listings)
-        }
+//     useEffect(()=>{
 
-        fetchFilteredListings()
+// const fetchData = async() =>{
+  
+//   //console.log('funkcija radi');
+//   try {
+//     const queryString = searchParams.toString();
+//   const res = await fetch(`/api/listing/get?page=${queryString}`,{
+//       method:'GET'
+//   })
+  
+//   const data = await res.json()
+  
+//   if (data.success === false) {
+//       console.log(data.message);
+//       return;
+//     }
+    
+//     setListings(data.listings)
+//     setTotalPages(Math.ceil(data.totalCount / 6))
+    
+    
+//   } catch (error) {
+//     console.log(error.message);
+    
+//   }
+// }
 
-    },[searchParams])
+
+// fetchData()
+
+// },[searchParams])
+useEffect(() => {
+  const fetchListings = async () => {
+    const params = new URLSearchParams(searchParams);
+
+    let changed = false;
+    if (!params.has('page')) {
+      params.set('page', 1);
+      changed = true;
+    }
+
+    if (!params.has('limit')) {
+      params.set('limit', 6);
+      changed = true;
+    }
+
+    if(changed){
+      setSearchParams(params)
+      return;
+    }
+
+    const queryString = params.toString(); 
+
+    try {
+      const res = await fetch(`/api/listing/get?${queryString}`);
+      const data = await res.json();
+
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+
+      setListings(data.listings);
+      setTotalPages(Math.ceil(data.totalCount / 6));
+    } catch (error) {
+      console.error('Greška:', error.message);
+    }
+  };
+
+  fetchListings();
+}, [searchParams, setSearchParams]);
+
+useEffect(()=>{
+  console.log('podaci su ucitani',listings);
+  
+},[listings])
+
+
+const handlePageChange = (page)=>{
+  setSearchParams((prev)=>{
+    const params = new URLSearchParams(prev)
+    params.set('page',page)
+    return params
+  })
+  
+}
+    
+
+
+
 
         console.log(listings);
         
 
   return (
+    <div>
    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 py-4">
    {
     listings && listings.length > 0 ? 
@@ -54,10 +140,17 @@ export default function Search() {
             </div>
           </div>
         </Link>
-    )):'There is no listings'
-
-   }
+    )):'There is no listings'}
     </div>
-  )
+  {listings && listings.length > 0 && (
+        <Pagination
+          currentPage={pageParam}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
+
+</div>
+)
   
 }
