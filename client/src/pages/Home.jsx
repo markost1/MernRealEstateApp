@@ -117,15 +117,38 @@ return (
 
   {/* filter */}
   <div className="flex justify-center items-center">
-  <div className="py-6 max-w-md mx-auto">
-  <h1 className="text-center p-3 font-semibold ">Pretraga Nekretnina</h1>
-    <form  onSubmit={handleSubmit} className="flex flex-col justify-center gap-2">
+  <div className="py-6 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+  <h1 className="text-center p-3 font-semibold text-xl ">Pretraga Nekretnina</h1>
+<form 
+  onSubmit={handleSubmit}
+  className="flex flex-col gap-4 w-full max-w-md mx-auto md:max-w-none md:flex-row md:flex-wrap md:justify-center"
+>
+    <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
       <LocationComp formData={formData}  setFormData={setFormData}/>
+    </div>
+    <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
+
       <TypeComp formData={formData} setFormData={setFormData} />
+    </div>
+    <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
+
       <CategoryComp formData={formData} setFormData={setFormData} />
+    </div>
+    <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
       <MinMaxPriceComp formData={formData} setFormData={setFormData} />
+
+    </div>
+    <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
       <BedroomsComp formData={formData} setFormData={setFormData}/>
-      <button className="border rounded-lg p-3 bg-blue-600 text-white uppercase hover:opacity-90">Search</button>
+
+    </div>
+
+    <div className="w-full md:max-w-[48%] lg:max-w-[32%] flex items-center">
+      <button className=" w-full max-w-md border rounded-lg p-3 bg-blue-600 text-white uppercase hover:opacity-90">
+      Search
+      </button>
+
+    </div>
     </form>
   </div>
   </div>

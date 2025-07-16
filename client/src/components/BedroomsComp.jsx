@@ -60,9 +60,9 @@ export default function BedroomsComp({formData,setFormData}) {
         <div ref={dropdownrRef} className="relative inline-block text-left w-full max-w-md">
             <button onClick={toogleDropdown}
             type="button" 
-            className=" w-full border p-3 rounded-md shadow bg-white text-left cursor-default truncate">
+            className=" w-full border p-3 rounded-md shadow bg-white text-left cursor-default truncate ">
                 {formData.bedrooms.length === 0 ?
-                "Sve" :
+                "Broj Soba" :
                 selectedLabels }
             </button>
                     {showDropdown &&  <div className="absolute z-10 mt-2 w-full bg-white border rounded-lg shadow-lg max-h-64 overflow-y-scroll">

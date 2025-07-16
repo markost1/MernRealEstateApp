@@ -11,17 +11,19 @@ const handleChange = (e) => {
 }
 
   return (
-    <div className='flex justify-between items-center max-w-md w-full ' >
-        <div>
+<div className='flex items-center gap-2 w-full max-w-full sm:max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg ' >
+        
             
-            <input type='Number' placeholder='From (€)' className='border rounded-lg shadow p-3' id='minPrice' onChange={handleChange} />
-        </div>
-        <div>
+            <input type='number' placeholder='From (€)' 
+            className='w-1/2 border rounded-lg shadow p-3' id='minPrice' onChange={handleChange} />
+        
+        <span className='px-1 text-gray-600'>
             -
-        </div>
-        <div>
-            <input type='Number' placeholder='To (€)' className='border rounded-lg shadow p-3 ' id='maxPrice' onChange={handleChange} />
-        </div>
+        </span>
+        
+            <input type='number' placeholder='To (€)' 
+            className='w-1/2 border rounded-lg shadow p-3 ' id='maxPrice' onChange={handleChange} />
+    
        
     </div>
   )

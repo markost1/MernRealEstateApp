@@ -47,7 +47,7 @@ export default function TypeComp({formData, setFormData}) {
     <div ref={dropdownrRef} className="relative inline-block text-left w-full max-w-md">
         <button onClick={toogleDropdown}
         type="button" 
-        className=" w-full border p-3 rounded-md shadow bg-white text-left cursor-default truncate">
+        className=" w-full border p-3 rounded-md shadow bg-white text-left cursor-default truncate ">
             {formData.type === 'all' ? 'Svi tipovi' : formData.type }
         </button>
                 {showDropdown &&  

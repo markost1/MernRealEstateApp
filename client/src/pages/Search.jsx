@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import home from '../assets/home.jpg'
 import { CiLocationOn } from 'react-icons/ci'
 import { MdCropFree, MdEuro } from 'react-icons/md'
 import Pagination from '../components/Pagination'
+import LocationComp from '../components/LocationComp'
+import TypeComp from '../components/TypeComp'
+import CategoryComp from '../components/CategoryComp'
+import MinMaxPriceComp from '../components/MinMaxPriceComp'
+import BedroomsComp from '../components/BedroomsComp'
 
 export default function Search() {
     
@@ -12,6 +17,16 @@ export default function Search() {
     const[listings,setListings] = useState([])
    // const [currentPage,setCurrentPage] = useState(pageParam)
     const [totalPages,setTotalPages] = useState(1)
+    const[formData,setFormData] = useState({
+  location:[],
+  type:'all',
+  category:[],
+  minPrice:1,
+  maxPrice:1000000000,
+  bedrooms:[],
+})
+
+const navigate = useNavigate()
 
 
 //     useEffect(()=>{
@@ -107,10 +122,83 @@ const handlePageChange = (page)=>{
 
 
         console.log(listings);
+
+        const handleSubmit = (e)=>{
+  e.preventDefault()
+
+  const urlParams =  new URLSearchParams()
+
+  if(formData.location.length > 0 ){
+    urlParams.set('location', formData.location.join(','))
+    
+  }
+
+if(formData.type && formData.type !== 'all'){
+    urlParams.set('type',formData.type)
+  }
+
+if(formData.category.length > 0){
+  urlParams.set('category', formData.category.join(','))
+}
+
+if(formData.minPrice){
+  urlParams.set('minPrice', formData.minPrice)
+}
+if(formData.maxPrice){
+  urlParams.set('maxPrice', formData.maxPrice)
+}
+
+if(formData.bedrooms.length > 0){
+  urlParams.set('bedrooms',formData.bedrooms)
+}
+
+  const searchQuery = urlParams.toString();
+
+  navigate(`/search?${searchQuery}`)
+
+}
         
 
   return (
+    
     <div>
+     {/* filter */}
+      <div className="flex justify-center items-center">
+      <div className="py-6 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 className="text-center p-3 font-semibold text-xl ">Pretraga Nekretnina</h1>
+    <form 
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 w-full max-w-md mx-auto md:max-w-none md:flex-row md:flex-wrap md:justify-center"
+    >
+        <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
+          <LocationComp formData={formData}  setFormData={setFormData}/>
+        </div>
+        <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
+    
+          <TypeComp formData={formData} setFormData={setFormData} />
+        </div>
+        <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
+    
+          <CategoryComp formData={formData} setFormData={setFormData} />
+        </div>
+        <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
+          <MinMaxPriceComp formData={formData} setFormData={setFormData} />
+    
+        </div>
+        <div className="w-full md:max-w-[48%] lg:max-w-[32%]">
+          <BedroomsComp formData={formData} setFormData={setFormData}/>
+    
+        </div>
+    
+        <div className="w-full md:max-w-[48%] lg:max-w-[32%] flex items-center">
+          <button className=" w-full max-w-md border rounded-lg p-3 bg-blue-600 text-white uppercase hover:opacity-90">
+          Search
+          </button>
+    
+        </div>
+        </form>
+      </div>
+      </div>
    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 py-4">
    {
     listings && listings.length > 0 ? 
