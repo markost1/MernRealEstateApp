@@ -117,9 +117,9 @@ return (
   <div>    
 
   {/* filter */}
-  <div className="flex justify-center items-center">
-  <div className="py-6 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-  <h1 className="text-center p-3 font-semibold text-xl ">Pretraga Nekretnina</h1>
+  <div className="flex justify-center items-center py-3 h-[500px] md:h-[600px]" style={{backgroundImage:`url(${home})`,backgroundSize:`cover`,backgroundPosition:`center`}}>
+  <div className="py-6 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+  <h1 className="text-center p-3 font-semibold text-xl text-white ">Pretraga Nekretnina</h1>
 <form 
   onSubmit={handleSubmit}
   className="flex flex-col gap-4 w-full max-w-md mx-auto md:max-w-none md:flex-row md:flex-wrap md:justify-center"
@@ -153,6 +153,7 @@ return (
     </form>
   </div>
   </div>
+    
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 py-4">
       {showListings && showListings.length > 0 ? showListings.map((listing) => (
         <Link key={listing._id} to={`/listing/${listing._id}`}>

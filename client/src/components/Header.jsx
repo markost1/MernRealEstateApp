@@ -8,32 +8,32 @@ export default function Header() {
 const {currentUser} = useSelector(state => state.user)
 
   return (
-    <header className='bg-blue-300'>
-        <div className='flex justify-between p-3 items-center max-w-6xl mx-auto'>
+    <header className='bg-blue-600 text-white'>
+        <div className='flex justify-between p-5 items-center max-w-6xl mx-auto'>
             
             <Link to="/">
             <h1 className='text-sm sm:text-xl flex flex-wrap font-bold'>
-                <span className='text-blue-700'>Real</span>
-                <span className='text-blue-600'>Estate</span>
+                <span className='text-white'>Real</span>
+                <span className='text-white'>Estate</span>
             </h1>
             </Link>
 
-            <form className='bg-slate-100 p-3 rounded-lg flex items-center'>
+            {/* <form className='bg-slate-100 p-3 rounded-lg flex items-center'>
                 <input type='text' placeholder='Search...' className='bg-transparent focus:outline-none w-24 sm:w-64' />
                 <FaSearch className='text-blue-700'/>
-            </form>
+            </form> */}
             <ul className='flex gap-4 items-center'>
             <Link to='/'>
-                <li className=' text-blue-800 hidden sm:inline hover:underline'>Home</li>
+                <li className=' text-white hidden sm:inline hover:underline'>Home</li>
             </Link>
             <Link to="/about">
-                <li className=' text-blue-800 hidden sm:inline hover:underline'>About</li>
+                <li className=' text-white hidden sm:inline hover:underline'>About</li>
             </Link>
             {currentUser ? <Link to='profile'>
                 <img src={avatarImg} alt={currentUser.username} className='w-10 h-10'/>
             </Link> : 
             <Link to='signin'>
-                <li className='text-blue-800 sm:inline hover:underline'>SignIn</li>
+                <li className='white sm:inline hover:underline'>SignIn</li>
             </Link>
             }
 

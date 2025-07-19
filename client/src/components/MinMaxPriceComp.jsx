@@ -17,7 +17,7 @@ const handleChange = (e) => {
             <input type='number' placeholder='From (€)' 
             className='w-1/2 border rounded-lg shadow p-3' id='minPrice' onChange={handleChange} />
         
-        <span className='px-1 text-gray-600'>
+        <span className='px-1 text-white font-bold'>
             -
         </span>
         
