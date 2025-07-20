@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import home from '../assets/home.jpg'
+//import home from '../assets/home.jpg'
 import { CiLocationOn } from 'react-icons/ci'
 import { MdCropFree, MdEuro } from 'react-icons/md'
 import Pagination from '../components/Pagination'
@@ -205,7 +205,7 @@ if(formData.bedrooms.length > 0){
     listings.map((listing)=>(
         <Link key={listing._id} to={`/listing/${listing._id}`}>
           <div className="bg-white rounded-lg shadow-md overflow-hidden relative min-h-[420px] hover:shadow-lg transition">
-            <img src={home} alt="image" className="w-full h-48 object-cover" />
+            <img src={listing.imageUrls[0]} alt="image" className="w-full h-48 object-cover" />
             <span className="absolute top-3 left-5 bg-blue-600 p-2 text-white rounded-lg uppercase">
               For {listing.type}
             </span>

@@ -1,12 +1,15 @@
 import { useState } from "react"
 import { useSelector } from "react-redux";
 import LocationComp from "../components/LocationComp";
+import { uploadImageToCloudinary } from "../utils/uploadImages.js";
 
 
 export default function CreateListing() {
 
 const {currentUser} = useSelector(state => state.user)
 
+const [imageFiles, setImageFiles] = useState([]);
+const [imageUrls, setImageUrls] = useState([]);
 
 
 
@@ -30,10 +33,13 @@ const [formData, setFormData] = useState({
   airCondition:false,
   category:[],
   location:[],
-
-
-
+  imageUrls:[]
+  
+  
+  
 });
+const cloudName = 'dkt3gce6g'
+const uploadPreset = 'realEstateApp';
 const [error, setError] = useState(false)
 const [loading,setLoading]  = useState(false)
 const [success, setSuccess] = useState(false)
@@ -82,6 +88,58 @@ const handleCategoryChange = (e) =>{
   }
 }
 
+//za slike
+const handleImageChange = (e) => {
+  const files = Array.from(e.target.files);
+
+  if (files.length + imageFiles.length > 10) {
+    alert("Maksimalno 10 slika.");
+    return;
+  }
+
+  const validImages = files.filter(file => file.size <= 2 * 1024 * 1024);
+
+  if (validImages.length !== files.length) {
+    alert("Neke slike su veće od 2MB i neće biti dodate.");
+  }
+
+  setImageFiles(prev => [...prev, ...validImages]);
+};
+
+//za upload
+const handleImageUpload = async () => {
+  if (imageFiles.length === 0) return;
+
+  try {
+    setLoading(true);
+    const urls = [];
+
+    for (const file of imageFiles) {
+      const imageUrl = await uploadImageToCloudinary(file, cloudName, uploadPreset);
+
+      urls.push(imageUrl);
+    }
+
+    setImageUrls(urls);
+    setFormData(prev => ({ ...prev, imageUrls: urls }));
+    setLoading(false);
+  } catch (error) {
+    console.log("Greška pri uploadu:", error);
+    setLoading(false);
+  }
+};
+
+//delete
+
+const handleRemoveImage = (index) => {
+  const updatedFiles = [...imageFiles];
+  updatedFiles.splice(index, 1);
+  setImageFiles(updatedFiles);
+};
+
+
+
+
 const handleSubmit = async(e) => {
   e.preventDefault();
   setLoading(true)
@@ -94,6 +152,7 @@ const handleSubmit = async(e) => {
       body:JSON.stringify({
         ...formData,
         userRef: currentUser._id,
+        imageUrls: imageUrls,
 
       })
     })
@@ -232,10 +291,47 @@ console.log(formData);
      </div>
      
       </div>
-      <div className="flex gap-3">
-        <input type="file" className="border border-gray-300 p-3 rounded-lg" id="images" accept="image/*" multiple />
-        <button className="p-3 border rounded-lg uppercase hover:shadow-lg disabled:opacity-90">Upload</button>
-      </div>
+     <div className="flex flex-col gap-4">
+  <input
+    type="file"
+    className="border border-gray-300 p-3 rounded-lg"
+    id="images"
+    accept="image/*"
+    multiple
+    onChange={handleImageChange}
+  />
+
+  {imageFiles.length > 0 && (
+    <div className="grid grid-cols-3 gap-3">
+      {imageFiles.map((file, index) => (
+        <div key={index} className="relative">
+          <img
+            src={URL.createObjectURL(file)}
+            alt="preview"
+            className="w-full h-32 object-cover rounded-md"
+          />
+          <button
+            type="button"
+            className="absolute top-1 right-1 bg-red-600 text-white rounded-full px-2 text-xs"
+            onClick={() => handleRemoveImage(index)}
+          >
+            X
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+
+  <button
+    type="button"
+    className="p-3 border rounded-lg uppercase hover:shadow-lg disabled:opacity-90 bg-blue-500 text-white"
+    onClick={handleImageUpload}
+    disabled={imageFiles.length === 0}
+  >
+    Upload Slike
+  </button>
+</div>
+
      
      <button className='mt-7 p-3 bg-blue-600 rounded-lg text-white uppercase hover:opacity-90 disabled:opacity-80'>
      {loading ? 'Loading' : 'Create Listing'} 
