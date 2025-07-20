@@ -232,6 +232,10 @@ console.log(formData);
      </div>
      
       </div>
+      <div className="flex gap-3">
+        <input type="file" className="border border-gray-300 p-3 rounded-lg" id="images" accept="image/*" multiple />
+        <button className="p-3 border rounded-lg uppercase hover:shadow-lg disabled:opacity-90">Upload</button>
+      </div>
      
      <button className='mt-7 p-3 bg-blue-600 rounded-lg text-white uppercase hover:opacity-90 disabled:opacity-80'>
      {loading ? 'Loading' : 'Create Listing'} 

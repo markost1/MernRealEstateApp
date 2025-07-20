@@ -1,5 +1,8 @@
 import mongoose from 'mongoose'
 
+const arrayLimit = (val) =>{
+    return val.length <= 10
+}
 
 const listingSchema = new mongoose.Schema({
      name:{
@@ -54,10 +57,14 @@ const listingSchema = new mongoose.Schema({
     //     type: Boolean,
     //     required:true,
     // },
-    // imageUrls:{
-    //     type:Array,
-    //     required:true,
-    // },
+    imageUrls:{
+        type:[String],
+        required:true,
+        validate:{
+            validator:arrayLimit,
+            message:"You can not upload more then 10 images"
+        },
+    },
     floor:{
     type:Number,
     },
