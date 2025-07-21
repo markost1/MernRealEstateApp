@@ -3,11 +3,17 @@ import { useState } from "react"
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import LocationComp from "../components/LocationComp";
+import { uploadImageToCloudinary } from "../utils/uploadImages";
 
 
-export default function CreateListing() {
+export default function UpdateListing() {
 
 const {currentUser} = useSelector(state => state.user)
+
+const [imageFiles, setImageFiles] = useState([]);
+const [imageUrls, setImageUrls] = useState([]);
+const [existingImageUrl, setExistingImageUrl] = useState([])
+
 
 const [formData, setFormData] = useState({
   name:'',
@@ -29,8 +35,11 @@ const [formData, setFormData] = useState({
   airCondition:false,
   category:[],
   location:[],
+  imageUrls:[],
 
 });
+const cloudName = 'dkt3gce6g'
+const uploadPreset = 'realEstateApp';
 const [error, setError] = useState(false)
 const [loading,setLoading]  = useState(false)
 const [success, setSuccess] = useState(false)
@@ -81,6 +90,72 @@ const handleCategoryChange = (e) =>{
   }
 }
 
+//za slike
+const handleImageChange = (e) => {
+  const files = Array.from(e.target.files);
+
+  if (files.length + imageFiles.length > 10) {
+    alert("Maksimalno 10 slika.");
+    return;
+  }
+
+  const validImages = files.filter(file => file.size <= 2 * 1024 * 1024);
+
+  if (validImages.length !== files.length) {
+    alert("Neke slike su veće od 2MB i neće biti dodate.");
+  }
+
+  setImageFiles(prev => [...prev, ...validImages]);
+};
+
+//za upload
+const handleImageUpload = async () => {
+  if (imageFiles.length === 0) return;
+
+  try {
+    setLoading(true);
+    const urls = [];
+
+    for (const file of imageFiles) {
+      const imageUrl = await uploadImageToCloudinary(file, cloudName, uploadPreset);
+
+      urls.push(imageUrl);
+    }
+
+    setImageUrls(prev => [...prev, ...urls]);
+setFormData(prev => ({
+  ...prev,
+  imageUrls: [...existingImageUrl, ...urls]
+}));
+
+    setLoading(false);
+  } catch (error) {
+    console.log("Greška pri uploadu:", error);
+    setLoading(false);
+  }
+};
+
+//delete
+const handleRemoveNewImage = (index) => {
+  const updated = imageUrls.filter((_, i) => i !== index);
+  setImageUrls(updated);
+  setFormData(prev => ({
+    ...prev,
+    imageUrls: [...existingImageUrl, ...updated], // ažuriraj formData.imageUrls
+  }));
+};
+
+
+const handleRemoveExistingImage = (index) => {
+  const updatedImages = existingImageUrl.filter((_, i) => i !== index);
+  setExistingImageUrl(updatedImages);
+  setFormData(prev => ({ ...prev, imageUrls: [...updatedImages, ...imageUrls] }));
+};
+
+
+
+
+
 
 const handleSubmit = async(e) => {
   e.preventDefault();
@@ -94,6 +169,7 @@ const handleSubmit = async(e) => {
       body:JSON.stringify({
         ...formData,
         userRef: currentUser._id,
+        imageUrls:[...existingImageUrl, ...imageUrls]
 
       })
     })
@@ -131,6 +207,7 @@ const handleSubmit = async(e) => {
         
       }
     setFormData(data)
+    setExistingImageUrl(data.imageUrls || [])
    
   }
   fetchListing()
@@ -249,6 +326,67 @@ const handleSubmit = async(e) => {
      </div>
      
       </div>
+{/* editovanje slika update listing */}
+      <div className="flex flex-col gap-4 mt-4">
+  <input
+    type="file"
+    className="border border-gray-300 p-3 rounded-lg"
+    id="images"
+    accept="image/*"
+    multiple
+    onChange={handleImageChange}
+  />
+
+  {existingImageUrl.length > 0 && (
+    <div className="grid grid-cols-3 gap-3">
+      {existingImageUrl.map((url, index) => (
+        <div key={index} className="relative">
+          <img
+            src={url}
+            alt="existing"
+            className="w-full h-32 object-cover rounded-md"
+          />
+          <button
+            type="button"
+            className="absolute top-1 right-1 bg-red-600 text-white rounded-full px-2 text-xs"
+            onClick={() => handleRemoveExistingImage(index)}
+          >
+            X
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+  {imageUrls.length > 0 && (
+  <div className="grid grid-cols-3 gap-3 mt-3">
+    {imageUrls.map((url, index) => (
+      <div key={`new-${index}`} className="relative">
+        <img
+          src={url}
+          alt="new"
+          className="w-full h-32 object-cover rounded-md"
+        />
+          <button
+            type="button"
+            className="absolute top-1 right-1 bg-red-600 text-white rounded-full px-2 text-xs"
+            onClick={() => handleRemoveNewImage(index)}
+          >
+            X
+          </button>
+      </div>
+    ))}
+  </div>
+)}
+
+  <button
+    type="button"
+    className="p-3 border rounded-lg uppercase hover:shadow-lg disabled:opacity-90 bg-blue-500 text-white"
+    onClick={handleImageUpload}
+    disabled={imageFiles.length === 0}
+  >
+    Upload Slike
+  </button>
+</div>
      
      <button className='mt-7 p-3 bg-blue-600 rounded-lg text-white uppercase hover:opacity-90 disabled:opacity-80'>
      {loading ? 'Loading' : 'Update Listing'} 
@@ -258,7 +396,7 @@ const handleSubmit = async(e) => {
 
 
     {error ? <p className="mt-5 text-red-700">{error.message}</p> : ''}
-    {success ? <p className="mt-5 text-green-700">Listing is successfully saved in DB </p> : ''}
+    {success ? <p className="mt-5 text-green-700">Listing is successfully updated in DB </p> : ''}
     
     
     

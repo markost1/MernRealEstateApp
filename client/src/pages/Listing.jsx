@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { MdCheck } from 'react-icons/md';
 import home from '../assets/home.jpg'
 import { useSelector } from "react-redux";
+import Footer from "../components/Footer";
 
 
 export default function Listing() {
@@ -65,6 +66,7 @@ console.log('podaci o oglasivacu',landLord);
 
 
   return (
+    <div>
       <div className="max-w-4xl mx-auto p-6 space-y-8">
       {/* Naslov */}
       <h1 className="text-4xl font-bold">{listingData.name}</h1>
@@ -137,7 +139,11 @@ console.log('podaci o oglasivacu',landLord);
         </form>
       </section>
       )}
+
    
+
+    </div>
+<Footer />
     </div>
   )
 }

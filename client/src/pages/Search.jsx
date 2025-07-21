@@ -9,6 +9,7 @@ import TypeComp from '../components/TypeComp'
 import CategoryComp from '../components/CategoryComp'
 import MinMaxPriceComp from '../components/MinMaxPriceComp'
 import BedroomsComp from '../components/BedroomsComp'
+import Footer from '../components/Footer'
 
 export default function Search() {
     
@@ -237,6 +238,8 @@ if(formData.bedrooms.length > 0){
           onPageChange={handlePageChange}
         />
       )}
+
+      <Footer />
 
 </div>
 )
