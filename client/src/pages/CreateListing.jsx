@@ -145,6 +145,7 @@ const handleSubmit = async(e) => {
   e.preventDefault();
   setLoading(true)
   try {
+    
     const res = await fetch('/api/listing/create',{
       method:'POST',
       headers:{

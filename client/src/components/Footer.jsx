@@ -35,6 +35,9 @@ export default function Footer() {
 
             
         </div>
+        <div className="flex flex-col justify-center items-center text-xs font-semibold p-1 md:flex-row gap-3">
+          <p>© Copyright {new Date().getFullYear()} Nekretnine RealEstate. </p> <span className="text-gray-300">Made with ❤️ by Prentindo tehnology</span>
+        </div>
     </footer>
   )
 }

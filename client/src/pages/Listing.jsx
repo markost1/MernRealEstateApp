@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { MdCheck } from 'react-icons/md';
-import home from '../assets/home.jpg'
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
+import TrySwiper from "./TrySwiper";
 
 
 export default function Listing() {
@@ -72,13 +72,8 @@ console.log('podaci o oglasivacu',landLord);
       <h1 className="text-4xl font-bold">{listingData.name}</h1>
 
       {/* Slika */}
-      <div className="overflow-hidden rounded-xl shadow-lg">
-        <img
-          src={home}
-          alt="Nekretnina"
-          className="w-full object-cover"
-        />
-      </div>
+        <TrySwiper  listingData={listingData}/>
+      
 
       {/* Opis */}
       <section>
