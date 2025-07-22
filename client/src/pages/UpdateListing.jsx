@@ -99,10 +99,10 @@ const handleImageChange = (e) => {
     return;
   }
 
-  const validImages = files.filter(file => file.size <= 2 * 1024 * 1024);
+  const validImages = files.filter(file => file.size <= 4 * 1024 * 1024);
 
   if (validImages.length !== files.length) {
-    alert("Neke slike su veće od 2MB i neće biti dodate.");
+    alert("Neke slike su veće od 4MB i neće biti dodate.");
   }
 
   setImageFiles(prev => [...prev, ...validImages]);

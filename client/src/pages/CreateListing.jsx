@@ -97,14 +97,16 @@ const handleImageChange = (e) => {
     return;
   }
 
-  const validImages = files.filter(file => file.size <= 2 * 1024 * 1024);
+  const validImages = files.filter(file => file.size <= 4 * 1024 * 1024);
 
   if (validImages.length !== files.length) {
-    alert("Neke slike su veće od 2MB i neće biti dodate.");
+    alert("Neke slike su veće od 4MB i neće biti dodate.");
   }
 
   setImageFiles(prev => [...prev, ...validImages]);
 };
+
+
 
 //za upload
 const handleImageUpload = async () => {
@@ -129,14 +131,13 @@ const handleImageUpload = async () => {
   }
 };
 
-//delete
+//delete image from imageFile
 
 const handleRemoveImage = (index) => {
   const updatedFiles = [...imageFiles];
   updatedFiles.splice(index, 1);
   setImageFiles(updatedFiles);
 };
-
 
 
 

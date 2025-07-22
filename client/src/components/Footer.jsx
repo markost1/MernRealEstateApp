@@ -1,4 +1,4 @@
-import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTiktok, FaPhone,FaMailBulk } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 
@@ -10,7 +10,7 @@ export default function Footer() {
 
                   <div>
                     <h2 className="text-xl font-bold mb-2">RealEstate</h2>
-                    <p className="text-sm text-gray-400">Agencija za trgovinu nekretninama</p>
+                    <p className="text-sm text-gray-200">Agencija za trgovinu nekretninama</p>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">
@@ -24,7 +24,8 @@ export default function Footer() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">Kontakt</h3>
-                    <p className="text-sm text-gray-300">Email: realestate@gmail.com</p>
+                    <p className="text-sm text-gray-300 flex items-center gap-5 my-2"><FaMailBulk /> <span>realestate@gmail.com</span></p>
+                    <p className="text-sm text-gray-300 flex items-center  gap-5 my-2"><FaPhone/> <span>069 123 456</span></p>
                     <div className='flex gap-4 mt-3'>
                       <a href='http://www.facebook.com ' target="_blank" ><FaFacebook /></a> 
                         <a href="http://www.instagram.com" target="_blank"><FaInstagram /></a>
