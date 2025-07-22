@@ -4,6 +4,7 @@ import { MdCheck } from 'react-icons/md';
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
 import TrySwiper from "./TrySwiper";
+import { FaShare } from "react-icons/fa";
 
 
 export default function Listing() {
@@ -13,6 +14,7 @@ const [listingData, setListingData] = useState({});
 const [landLord, setLandLord] = useState()
 const [message,setMessage] = useState("");
 const{currentUser} = useSelector(state => state.user)
+const [copy,setCopy] = useState(false)
 
 console.log('trenutni korisnik aplikacije', currentUser);
 
@@ -68,6 +70,7 @@ console.log('podaci o oglasivacu',landLord);
   return (
     <div>
       <div className="max-w-4xl mx-auto p-6 space-y-8">
+    
       {/* Naslov */}
       <h1 className="text-4xl font-bold">{listingData.name}</h1>
 
@@ -102,6 +105,25 @@ console.log('podaci o oglasivacu',landLord);
     {listingData.balcony > 0 &&  <div className="flex items-center gap-3"><span className="font-semibold">Balcony:</span> <MdCheck size={26} color="green" /> </div>}
         </div>
       </section>
+      
+      {/* kopiranje linka */}
+      
+      {copy === false ?   <div className="py-3 flex justify-end">
+        <FaShare className="w-8 h-8 text-gray-700"
+          onClick={()=>{
+            navigator.clipboard.writeText(window.location.href)
+            setCopy(true)
+            setTimeout(()=>{
+              setCopy(false)},
+              2000
+            )
+          }}
+        />
+      </div> : <div className="py-3 flex justify-end transition ease-in duration-100">
+          <p>Link is copied!</p>
+        </div>}
+    
+     
 
       {/* Kontakt forma */}
       { currentUser && currentUser._id !== listingData.userRef && landLord && 

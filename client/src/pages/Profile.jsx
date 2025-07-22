@@ -3,7 +3,7 @@ import  avatarImg  from '../assets/avatarImg.jpg'
 import {useDispatch, useSelector} from 'react-redux'
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutFailure, signOutStart, signOutSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
 import { Link, useNavigate } from 'react-router-dom'
-import home from '../assets/home.jpg'
+
 
 export default function Profile() {
 const {currentUser, loading, error} = useSelector(state => state.user)
@@ -169,7 +169,7 @@ const navigate = useNavigate();
       {userListings && userListings.length > 0 && userListings.map((listing)=>{
         return <div className='border flex p-3 justify-between items-center gap-3  flex-1 min-w-0' key={listing._id}>
         <Link to={`/listing/${listing._id}`} >
-          <img className='w-12 h-12 shrink-0' src={home} alt='image'/>
+          <img className='w-12 h-12 shrink-0' src={listing.imageUrls[0]} alt='image'/>
           </Link>
           <Link to={`/listing/${listing._id}` } className='flex-1 min-w-0'>
           <p className='flex-1 truncate hover:underline '>{listing.name}</p>
