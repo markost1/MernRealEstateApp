@@ -1,12 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import  avatarImg  from '../assets/avatarImg.jpg'
 import {useDispatch, useSelector} from 'react-redux'
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutFailure, signOutStart, signOutSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice'
 import { Link, useNavigate } from 'react-router-dom'
+import { uploadImageToCloudinary } from '../utils/uploadImages'
 
 
 export default function Profile() {
 const {currentUser, loading, error} = useSelector(state => state.user)
+const cloudName = 'dkt3gce6g'
+const uploadPreset = 'realEstateApp';
+const fileRef = useRef(null)
+const [file,setFile] = useState()
 const [formData,setFormData] = useState({})
 const [updateSuccess, setUpdateSuccess] = useState(false)
 const [userListings, setUserListings] = useState([])
@@ -18,6 +23,31 @@ const navigate = useNavigate();
       ...formData, [e.target.id] : e.target.value,
     })
   }
+  useEffect(()=>{
+  if (file) {
+    const handleImageUpload = async()=>{
+      if(!file.type.startsWith('/image')){
+        alert('You can upload only image file')
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Slika mora biti manja od 2MB.');
+       return;
+     }
+      const imageUrl = await uploadImageToCloudinary(file,cloudName, uploadPreset)
+      setFormData((prev)=>({
+        ...prev,
+         avatar:imageUrl
+      }))
+    }
+
+    handleImageUpload()
+    
+    console.log('slika je uploadovana na cloudinary');
+    
+    
+  }
+},[file])
 
   
   const handleSubmit = async(e) => {
@@ -136,13 +166,33 @@ const navigate = useNavigate();
     }
   }
   
+console.log(file);
+// useEffect(()=>{
+//   if (file) {
+//     const handleImageUpload = async()=>{
+//       const imageUrl = await uploadImageToCloudinary(file,cloudName, uploadPreset)
+//       setFormData({...formData, avatar:imageUrl})
+//     }
+
+//     handleImageUpload()
+    
+//     console.log('slika je uploadovana na cloudinary');
+    
+    
+//   }
+// },[file])
+
+console.log(formData);
+console.log(currentUser);
+
 
   return (
    
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-center text-3xl font-semibold'>Profile</h1>
-      <img src={avatarImg} alt='image' className='rounded-full w-24 h-24 object-cover m-4 mx-auto '/>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+      <input onChange={(e)=>{setFile(e.target.files[0])}} type='file' ref={fileRef} hidden accept='image/*' />
+      <img onClick={()=>{fileRef.current.click()}} src={currentUser.avatar || avatarImg} alt='image' id='avatar' className='rounded-full w-24 h-24 object-cover m-4 mx-auto '/>
         <input type='username' id='username' placeholder='Username' className='border rounded-lg p-3' defaultValue={currentUser.username} onChange={handleChange} />
         <input type='email' id='email 'placeholder='Email'  className='border rounded-lg p-3' defaultValue={currentUser.email} onChange={handleChange} />
         <input type='password' id='password' placeholder='Password'  className='border rounded-lg p-3'/>

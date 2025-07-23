@@ -30,7 +30,7 @@ const {currentUser} = useSelector(state => state.user)
                 <li className=' text-white hidden sm:inline hover:underline'>About</li>
             </Link>
             {currentUser ? <Link to='profile'>
-                <img src={avatarImg} alt={currentUser.username} className='w-10 h-10'/>
+                <img src={currentUser.avatar || avatarImg} alt={currentUser.username} className='w-10 h-10 rounded-full'/>
             </Link> : 
             <Link to='signin'>
                 <li className='white sm:inline hover:underline'>SignIn</li>
